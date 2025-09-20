@@ -1,1 +1,24 @@
-@import "tailwindcss"
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-montserrat: "Montserrat", sans-serif;
+}
+
+.container {
+  @apply mx-auto px-4
+}
+
+.bg-hero {
+  @apply bg-cover bg-center;
+  background-image: url(/img/img-banner.jpg);
+}
+
+.bg-newsletter {
+  @apply bg-cover bg-center;
+  background-image: url(/img/background-newsletter.webp);
+}
+
+html, body {
+  @apply font-montserrat;
+}
