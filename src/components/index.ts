@@ -9,3 +9,7 @@ export * from './home/Brands'
 export * from './shared/Navbar'
 export * from './shared/Footer'
 export * from './shared/Sparator'
+export * from './shared/Pagination'
+
+// SKELETONS
+export * from './skeletons/ProductGridSkeleton'

@@ -9,8 +9,22 @@ const availableBrands = [
   "Honor",
 ];
 
-export function ContainerFilter() {
-  return (
+interface Props {
+  selectedBrands: string[];
+  setSelectedBrands: (brands: string[]) => void;
+}
+
+export function ContainerFilter({ selectedBrands, setSelectedBrands }: Props) {
+
+  const handleBrandsChange = (brand: string) => {
+    if (selectedBrands.includes(brand)) {
+      const newBrand = selectedBrands.filter(item => item !== brand)
+      setSelectedBrands(newBrand)
+    } else {
+      setSelectedBrands([...selectedBrands, brand])
+    }
+  }
+   return (
     <div className="p-5 border border-slate-200 rounded-lg h-fit col-span-2 lg:col-span-1">
       <h3 className="font-semibold text-xl mb-4">Filtros</h3>
       {/* Separador */}
@@ -22,6 +36,8 @@ export function ContainerFilter() {
           {availableBrands.map((brand) => (
             <label key={brand} className="inline-flex items-center">
               <input
+                onChange={()=> handleBrandsChange(brand)}
+                checked={selectedBrands.includes(brand)}
                 type="checkbox"
                 className="text-black border-black focus:ring-black accent-black"
               />
