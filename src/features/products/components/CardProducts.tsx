@@ -3,6 +3,7 @@ import { FiPlus } from "react-icons/fi";
 import { useState } from "react";
 import type { VariantProduct } from "@/common/interfaces";
 import { formatPrice } from "@/common/helpers";
+import { Tag } from "@/components";
 
 interface Props {
   img: string;
@@ -22,7 +23,7 @@ export function CardProducts({ img, name, price, slug, colors, variants }: Props
 
   return (
     <div className="flex flex-col gap-6 relative">
-      <Link to={`/smarthphones/${slug}`} className="flex relative group overflow-hidden">
+      <Link to={`/smarthphone/${slug}`} className="flex relative group overflow-hidden">
         <div className="flex h-[350px] w-full items-center justify-center py-2 lg:h-[250px]">
           <img src={img} alt={name} className="object-contain h-full w-full"/>
         </div>
@@ -49,7 +50,7 @@ export function CardProducts({ img, name, price, slug, colors, variants }: Props
         </div>
       </div>
       <div className="absolute">
-        {stock === 0 && <span>Agotado</span>}
+        {stock === 0 && <Tag contentTag="Agotado"/>}
       </div>
     </div>
   )
