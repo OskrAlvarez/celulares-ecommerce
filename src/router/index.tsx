@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
         element: <Smartphones />
       },
       {
-        path: 'smarthphone/:slug',
+        path: 'smartphone/:slug',
         element: <Smartphone />
       },
       {

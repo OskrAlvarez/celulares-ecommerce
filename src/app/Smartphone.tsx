@@ -1,17 +1,22 @@
-import { formatPrice } from "@/common/helpers";
-import { Loader, Separator, Tag } from "@/components";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { LuMinus, LuPlus } from "react-icons/lu";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { BsChatLeftText } from "react-icons/bs";
 
-import { Link, useParams } from "react-router-dom";
+import type { VariantProduct } from "@/common/interfaces";
+import { formatPrice } from "@/common/helpers";
+
+import { Loader, Separator, Tag } from "@/components";
+
 import {
   GridImages,
   ProductDescription,
   useProduct,
 } from "@/features/products";
-import { useEffect, useMemo, useState } from "react";
-import type { VariantProduct } from "@/common/interfaces";
+import { useCartStore, useCounterStore } from "@/features/cart";
+import toast from "react-hot-toast";
+
 
 interface Acc {
   [key: string]: {
@@ -22,13 +27,22 @@ interface Acc {
 
 export function Smartphone() {
   const { slug } = useParams<{ slug: string }>();
-  const { product, isLoading, isError } = useProduct(slug || "");
+  const [currentSlug, setCurrentSlug] = useState(slug)
+  const { product, isLoading, isError } = useProduct(currentSlug || "");
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<VariantProduct | null>(
     null
   );
   const [selectedStorage, setSelectedStorage] = useState<string | null>(null);
+
+  const count = useCounterStore((state) => state.count);
+  const increment = useCounterStore((state) => state.increment);
+  const decrement = useCounterStore((state) => state.decrement);
+
+  const addItem = useCartStore(state => state.addItem)
+
+  const navigate = useNavigate()
 
   // Agrupamos las variantes por color
   const colors = useMemo(() => {
@@ -78,13 +92,55 @@ export function Smartphone() {
     }
   }, [selectedColor, selectedStorage, product?.variants]);
 
+  // Funcion para añadir al carrito
+  const addToCart = () => {
+    if (selectedVariant) {
+      addItem({
+        variantId: selectedVariant.id,
+        productId: product?.id || '',
+        name: product?.name || '',
+        image: product?.images[0] || '',
+        color: selectedVariant.color_name,
+        storage: selectedVariant.storage,
+        price: selectedVariant.price,
+        quantity: count
+      })
+
+      toast.success('Producto Añadido al Carrito', {
+        position: 'bottom-right'
+      })
+    }
+  }
+  // Funcion para comprar ahora
+  const buyNow = () => {
+    if (selectedVariant) {
+      addItem({
+        variantId: selectedVariant.id,
+        productId: product?.id || '',
+        name: product?.name || '',
+        image: product?.images[0] || '',
+        color: selectedVariant.color_name,
+        storage: selectedVariant.storage,
+        price: selectedVariant.price,
+        quantity: count
+      })
+      navigate('/checkout')
+    }
+  }
+
+  // Reset del slug actual cuando cambia en la url
+  useEffect(() =>{
+    setCurrentSlug(slug)
+
+    // Reset de color, variant, storage
+    setSelectedVariant(null)
+    setSelectedColor(null)
+    setSelectedStorage(null)
+  }, [slug])
   // Obtener el Stock
   const isOutOfStock = selectedVariant?.stock === 0;
 
-  if (!product || isLoading)
-    return (<Loader />)
-
-
+  if (!product || isLoading) return <Loader />;
 
   if (!product || isError)
     return (
@@ -131,9 +187,7 @@ export function Smartphone() {
                 <button
                   key={color}
                   className={`w-8 h-8 rounded-full flex items-center justify-center cursor-pointer ${
-                    selectedColor === color
-                    ? "border border-slate-800"
-                    : ""
+                    selectedColor === color ? "border border-slate-800" : ""
                   }`}
                   onClick={() => setSelectedColor(color)}
                 >
@@ -153,14 +207,14 @@ export function Smartphone() {
               <div className="flex gap-3">
                 <select
                   className="border border-gray-300 rounded-lg px-3 py-1"
-                  value={selectedStorage || ''}
+                  value={selectedStorage || ""}
                   onChange={(e) => setSelectedStorage(e.target.value)}
                 >
-                  {
-                    colors[selectedColor].storages.map(storage => (
-                      <option key={storage} value={storage}>{storage}</option>
-                    ))
-                  }
+                  {colors[selectedColor].storages.map((storage) => (
+                    <option key={storage} value={storage}>
+                      {storage}
+                    </option>
+                  ))}
                 </select>
               </div>
             )}
@@ -175,24 +229,28 @@ export function Smartphone() {
             </button>
           ) : (
             <>
+              {/* Contador */}
               <div className="space-y-3">
                 <p className="text-sm font-medium">Cantidad:</p>
                 <div className="flex gap-8 px-5 py-3 border border-slate-200 w-fit rounded-full">
-                  <button>
+                  <button
+                    onClick={decrement}
+                    disabled={count === 1}
+                  >
                     <LuMinus size={15} />
                   </button>
-                  <span className="text-slate-500 text-sm">1</span>
-                  <button>
+                  <span className="text-slate-500 text-sm">{count}</span>
+                  <button onClick={increment}>
                     <LuPlus size={15} />
                   </button>
                 </div>
               </div>
               {/* Botones Accion */}
               <div className="flex flex-col gap-3">
-                <button className="bg-[#f3f3f3] uppercase font-semibold tracking-widest text-xs py-4 rounded-full transition-all duration-300 hover:bg-[#e2e2e2] w-full">
+                <button onClick={addToCart} className="bg-[#f3f3f3] uppercase font-semibold tracking-widest text-xs py-4 rounded-full transition-all duration-300 hover:bg-[#e2e2e2] w-full">
                   Agregar a Carrito
                 </button>
-                <button className="bg-indigo-600 text-white uppercase font-semibold tracking-widest text-xs py-4 rounded-full">
+                <button onClick={buyNow} className="bg-indigo-600 text-white uppercase font-semibold tracking-widest text-xs py-4 rounded-full">
                   Comprar Ahora
                 </button>
               </div>

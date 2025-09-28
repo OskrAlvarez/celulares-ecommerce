@@ -129,3 +129,24 @@ export async function getProductBySlug(slug: string) {
     }
   }
 }
+
+export async function searchProductByName(term: string) {
+  try {
+    const {data, error} = await supabase
+      .from("products")
+      .select("*, variants(*)")
+      .ilike("name", `%${term}%`) // Buscar producto que tenga el termino de busqueda
+
+      if (error) {
+      throw new Error("Error fetching single product: ", error);
+    }
+
+    return data
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error(error);
+    }
+  }
+}

@@ -3,16 +3,22 @@ import { Link, NavLink } from "react-router-dom";
 import { HiOutlineSearch, HiOutlineShoppingBag } from "react-icons/hi";
 import { FaBarsStaggered } from 'react-icons/fa6';
 import { Logo } from "./Logo";
+import { useGlobalStore } from "@/common/store/global.store";
+import { useCartStore } from "@/features/cart";
 
 export function Navbar() {
+  const openSheet = useGlobalStore((state) => state.openSheet)
+  const setActiveNavMobile = useGlobalStore((state) => state.setActiveNavMobile)
+  const totalItems = useCartStore((state) => state.totalItems);
+
   return (
     <header className="bg-white text-black py-4 flex items-center justify-between px-5 border-b border-slate-200 lg:px-12">
       {/* LOGO */}
       <Logo />
       <nav className="space-x-5 hidden md:flex">
-        {navbarLinks.map((link) => (
+        {navbarLinks.map((link, index) => (
           <NavLink
-            key={link.id}
+            key={`${link.id}${index}#`}
             to={link.href}
             className={({ isActive }) =>
               `${
@@ -25,7 +31,7 @@ export function Navbar() {
         ))}
       </nav>
       <div className="flex gap-5 items-center">
-        <button>
+        <button onClick={() => openSheet('SEARCH')} className="cursor-pointer">
           <HiOutlineSearch size={25} />
         </button>
 
@@ -39,16 +45,16 @@ export function Navbar() {
           </Link>
         </div>
 
-        <div className="relative">
-          <button className="relative">
+        <div className="relative" onClick={() => openSheet('CART')}>
+          <button className="relative cursor-pointer">
             <span className="absolute -bottom-2 -right-2 w-5 h-5 grid place-items-center bg-black text-white text-xs rounded-full">
-              0
+              {totalItems}
             </span>
             <HiOutlineShoppingBag size={25} />
           </button>
         </div>
 
-        <button className='md:hidden'>
+        <button className='md:hidden cursor-pointer' onClick={() => setActiveNavMobile(true)}>
 				<FaBarsStaggered size={25} />
 			</button>
       </div>

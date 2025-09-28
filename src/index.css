@@ -4,6 +4,36 @@
 
 @theme {
   --font-montserrat: "Montserrat", sans-serif;
+  --animate-fade-in: fade-in .3s ease-in-out;
+  --animate-slide-in: slide-in .3s ease-in-out;
+  --animate-slide-in-left: slide-in-left .3s ease-in-out;
+  --spin-slow: spin linear 2s infinite;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    },
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in {
+    0% {
+      transform: translateX(100%);
+    },
+    100% {
+      transform: translateX(0);
+    }
+  }
+  @keyframes slide-in-left {
+    0% {
+      transform: translateX(-100%);
+    },
+    100% {
+      transform: translateX(0);
+    }
+  }
 }
 
 .container {
