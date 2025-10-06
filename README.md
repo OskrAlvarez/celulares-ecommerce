@@ -23,6 +23,8 @@ Antes de ejecutar el proyecto, revisa el archivo `.env.example` para ver cómo d
   - **Otras librerías**: Posibles utilidades para manejo de estado, hooks personalizados y componentes reutilizables.
 
 ## Funcionalidades principales
+  - Autenticación de usuarios (registro, inicio de sesión y cierre de sesión).
+  - Gestión y visualización de pedidos del usuario (OrderUser).
   - Visualización de catálogo de smartphones.
   - Filtros y búsqueda de productos.
   - Carrito de compras con contador y gestión de productos.
@@ -38,7 +40,7 @@ Antes de ejecutar el proyecto, revisa el archivo `.env.example` para ver cómo d
 
   - `src/app`: Páginas principales.
   - `src/components`: Componentes reutilizables y específicos de cada sección.
-  - `src/features`: Funcionalidades como carrito y productos.
+  - `src/features`: Funcionalidades: carrito, productos y auth.
   - `src/common`: Constantes, helpers, interfaces y store global.
   - `src/data`: Scripts y datos iniciales.
   - `src/layouts`: Layout principal.
