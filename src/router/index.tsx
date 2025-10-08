@@ -1,7 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { About, Checkout, Home, Login, OrdersUser, OrderUser, Register, Smartphone, Smartphones, ThankYou } from "@/app";
-import { RootLayout } from "@/layouts/RootLayout";
+import { RootLayout,  } from "@/layouts/RootLayout";
 import { ClientLayout } from "@/layouts/ClientLayout";
+import { CheckoutLayout } from "@/layouts/CheckoutLayout";
 
 export const router = createBrowserRouter([
   {
@@ -53,11 +54,11 @@ export const router = createBrowserRouter([
     ]
   },
   {
-    path: '/checkout',
-    element: <Checkout />
-  },
-  {
-    path: '/checkout/:id/thank-you',
-    element: <ThankYou />
-  },
+  path: '/checkout',
+  element: <CheckoutLayout />,
+  children: [
+    { index: true, element: <Checkout /> },
+    { path: ':id/thank-you', element: <ThankYou /> }
+  ]
+}
 ])
