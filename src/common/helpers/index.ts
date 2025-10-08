@@ -43,3 +43,40 @@ export function formatPrice(price:number) {
     maximumFractionDigits: 2
   }).format(price)
 }
+
+// Funcion para formatear fecha a 3 de enero de 2022
+export function formatDateLong(date: string): string {
+  const dateObject = new Date(date)
+
+  return dateObject.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+// Funcion para obtener estado de pedido en español
+export function getStatus(status:string): string {
+  switch (status) {
+    case 'Pending':
+      return 'Pendiente'
+
+    case 'Paid':
+      return 'Pagado'
+
+      case 'Shipped':
+      return 'Enviado'
+
+    case 'Delivered':
+      return 'Entregado'
+
+    default:
+      return status
+  }
+}
+
+export function getInitials (fullName: string): string {
+  const parts = fullName.trim().split(/\s+/);
+  const initials = parts.slice(0, 2).map(p => p.charAt(0).toUpperCase());
+  return initials.join('');
+};
