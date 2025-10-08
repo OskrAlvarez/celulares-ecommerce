@@ -88,6 +88,7 @@ export async function getOrdersById(orderId: number) {
           postal_code: order.addresses.postal_code,
           country: order.addresses.country,
         },
+        created_at: order.created_at,
         order_items: order.order_items.map((item) => ({
           quantity: item.quantity,
           price: item.price,
