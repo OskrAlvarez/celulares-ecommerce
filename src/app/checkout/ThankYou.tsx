@@ -13,18 +13,7 @@ export function ThankYou() {
   if (isLoading || !data) return <Loader />;
 
   return (
-    <div className="flex flex-col h-screen">
-      <header className="text-black flex items-center justify-center flex-col px-10 py-12">
-        <Link
-          to="/"
-          className="text-4xl font-bold tracking-tighter transition-all md:text-5xl"
-        >
-          <p>
-            Celulares
-            <span className="text-indigo-600">Baratos</span>
-          </p>
-        </Link>
-      </header>
+    <div className="flex flex-col h-screen mt-6">
       <main className="container flex flex-1 flex-col items-center gap-10">
         <div className="flex gap-3 items-center">
           <CiCircleCheck size={40} />
