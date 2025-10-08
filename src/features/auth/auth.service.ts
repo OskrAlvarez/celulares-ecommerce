@@ -114,14 +114,35 @@ export async function singOut() {
 
 export async function getSession() {
   try {
-    const {data, error} = await supabase.auth.getSession()
+    const { data, error } = await supabase.auth.getSession();
 
     if (error) {
       throw new Error("Error al obtener la session");
     }
 
-    return data.session
+    return data.session;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error(error);
+    }
+  }
+}
 
+export async function getUserData(userId: string) {
+  try {
+    const {data: user_data, error} = await supabase
+      .from("customers")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return user_data
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
