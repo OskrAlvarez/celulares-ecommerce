@@ -49,7 +49,7 @@ export function TableProducts() {
     return <Loader />;
   }
   return (
-    <div className="flex flex-col flex-1 border border-gray-200 rounded-lg p-5 bg-white">
+    <div className="container flex flex-col flex-1 border border-gray-200 rounded-lg p-5 bg-white">
       <h1 className="font-bold text-xl">Productos</h1>
       <p className="text-sm mt-1 mb-8 font-normal text-gray-500">
         Gestiona tus Productos y mira las estadisticas de tus ventas.
