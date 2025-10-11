@@ -16,3 +16,6 @@ export * from './user/OrderUser'
 // Checkout Pages
 export * from './checkout/Checkout'
 export * from './checkout/ThankYou'
+
+// Admin Dashboard Pages
+export * from './dashboard/AdminProducts'

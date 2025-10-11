@@ -55,6 +55,17 @@ export function formatDateLong(date: string): string {
   })
 }
 
+// Funcion para formatear la fecha a 03/01/2022
+export function formatDateShort(date: string): string {
+  const dateObject = new Date(date)
+
+  return dateObject.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  })
+}
+
 // Funcion para obtener estado de pedido en español
 export function getStatus(status:string): string {
   switch (status) {

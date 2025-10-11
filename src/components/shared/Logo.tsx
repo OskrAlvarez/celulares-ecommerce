@@ -1,16 +1,23 @@
 import { Link } from "react-router-dom";
 
-export function Logo() {
+interface Props {
+  isDashboard?: boolean;
+}
+
+export function Logo({ isDashboard }: Props) {
   return (
-    <Link to={"/"} className="text-2xl font-bold tracking-tighter transition-all">
+    <Link
+      to={"/"}
+      className={`text-2xl font-bold tracking-tighter transition-all ${isDashboard && 'hover:scale-105'}`}
+    >
       <p className="hidden lg:block">
         Celulares
         <span className="text-indigo-600">Baratos</span>
       </p>
-      <p className='flex text-4xl lg:hidden'>
-				<span className='-skew-x-6'>C</span>
-				<span className='text-indigo-600 skew-x-6'>B</span>
-			</p>
+      <p className="flex text-4xl lg:hidden">
+        <span className="-skew-x-6">C</span>
+        <span className="text-indigo-600 skew-x-6">B</span>
+      </p>
     </Link>
-  )
+  );
 }

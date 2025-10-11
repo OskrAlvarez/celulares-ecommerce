@@ -1,8 +1,21 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { About, Checkout, Home, Login, OrdersUser, OrderUser, Register, Smartphone, Smartphones, ThankYou } from "@/app";
-import { RootLayout,  } from "@/layouts/RootLayout";
+import {
+  About,
+  AdminProducts,
+  Checkout,
+  Home,
+  Login,
+  OrdersUser,
+  OrderUser,
+  Register,
+  Smartphone,
+  Smartphones,
+  ThankYou,
+} from "@/app";
+import { RootLayout } from "@/layouts/RootLayout";
 import { ClientLayout } from "@/layouts/ClientLayout";
 import { CheckoutLayout } from "@/layouts/CheckoutLayout";
+import { DashboardLayout } from "@/layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -10,55 +23,69 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        index: true,  // Toma el mismo path del padre(RootLayout)
-        element: <Home />
+        index: true, // Toma el mismo path del padre(RootLayout)
+        element: <Home />,
       },
       {
-        path: 'smartphones',
-        element: <Smartphones />
+        path: "smartphones",
+        element: <Smartphones />,
       },
       {
-        path: 'smartphone/:slug',
-        element: <Smartphone />
+        path: "smartphone/:slug",
+        element: <Smartphone />,
       },
       {
-        path: 'about-us',
-        element: <About />
+        path: "about-us",
+        element: <About />,
       },
       {
-        path:'login',
-        element: <Login />
+        path: "login",
+        element: <Login />,
       },
       {
-        path: 'register',
-        element: <Register />
+        path: "register",
+        element: <Register />,
       },
       {
-        path: 'account',
+        path: "account",
         element: <ClientLayout />,
         children: [
           {
-            path: '',
-            element: <Navigate to='/account/orders' />
+            path: "",
+            element: <Navigate to="/account/orders" />,
           },
           {
-            path: 'orders',
-            element: <OrdersUser />
+            path: "orders",
+            element: <OrdersUser />,
           },
           {
-            path: 'orders/:id',
-            element: <OrderUser />
-          }
-        ]
+            path: "orders/:id",
+            element: <OrderUser />,
+          },
+        ],
       },
-    ]
+    ],
   },
   {
-  path: '/checkout',
-  element: <CheckoutLayout />,
-  children: [
-    { index: true, element: <Checkout /> },
-    { path: ':id/thank-you', element: <ThankYou /> }
-  ]
-}
-])
+    path: "/checkout",
+    element: <CheckoutLayout />,
+    children: [
+      { index: true, element: <Checkout /> },
+      { path: ":id/thank-you", element: <ThankYou /> },
+    ],
+  },
+  {
+    path: '/dashboard',
+    element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to='/dashboard/products' />
+      },
+      {
+        path: 'products',
+        element: <AdminProducts />
+      }
+    ]
+  }
+]);

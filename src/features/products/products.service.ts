@@ -1,19 +1,24 @@
 import { supabase } from "@/common/supabase/client";
 
-export async function getProducts() {
+export async function getProducts(page: number, pageItems?: number) {
+  const itemsPerPage = pageItems || 10;
+  const from = (page - 1) * itemsPerPage;
+  const to = from + itemsPerPage - 1;
+
   try {
-    const { data: products, error } = await supabase
+    const { data: products, error, count } = await supabase
       .from("products")
-      .select("*, variants(*)")
+      .select("*, variants(*)", { count: 'exact' })
       .order("created_at", {
         ascending: false,
-      });
+      })
+      .range(from, to);
 
     if (error) {
       console.error(error);
       throw new Error(error.message);
     }
-    return products;
+    return {products, count};
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
@@ -115,12 +120,12 @@ export async function getProductBySlug(slug: string) {
       .from("products")
       .select("*, variants(*)")
       .eq("slug", slug)
-      .single()
+      .single();
     if (error) {
       throw new Error("Error fetching single product: ", error);
     }
 
-    return data
+    return data;
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
@@ -132,16 +137,16 @@ export async function getProductBySlug(slug: string) {
 
 export async function searchProductByName(term: string) {
   try {
-    const {data, error} = await supabase
+    const { data, error } = await supabase
       .from("products")
       .select("*, variants(*)")
-      .ilike("name", `%${term}%`) // Buscar producto que tenga el termino de busqueda
+      .ilike("name", `%${term}%`); // Buscar producto que tenga el termino de busqueda
 
-      if (error) {
+    if (error) {
       throw new Error("Error fetching single product: ", error);
     }
 
-    return data
+    return data;
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
